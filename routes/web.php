@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\BatchController;
+use App\Http\Controllers\backend\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,13 +30,17 @@ Route::middleware([
     })->name('dashboard');
 
     //*ADDING BATCHES
-    Route::prefix('/batch')->name('batch.')->group(function(){
+    Route::prefix('/batch')->name('batch.')->group(function () {
         Route::GET('/manage', [BatchController::class, 'index'])->name('add');
-        Route::GET('/store', [BatchController::class, 'store'])->name('store');
+        Route::GET('/view/{batch:slug}', [BatchController::class, 'view'])->name('view');
+        Route::POST('/store', [BatchController::class, 'store'])->name('store');
+        Route::GET('/edit/{editedBatch:slug}', [BatchController::class, 'batchEdit'])->name('edit');
+        Route::PUT('/update/{editedBatch:slug}', [BatchController::class, 'update'])->name('update');
     });
 
-
-
-
-
+    //*ADDING STUDENTS TO BATCH
+    Route::prefix('/student')->name('student.')->group(function(){
+        Route::GET('/add', [StudentController::class, 'index'])->name('add');
+        Route::POST('/store', [StudentController::class, 'store'])->name('store');
+    });
 });

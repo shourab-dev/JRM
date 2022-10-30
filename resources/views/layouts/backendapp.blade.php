@@ -12,6 +12,9 @@
     <meta name="author" content="LEFT4CODE">
     <title>Dashboard - JRM System</title>
     <!-- BEGIN: CSS Assets-->
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     @vite('resources/backend/css/app.css')
     @stack('customCss')
     <!-- END: CSS Assets-->
@@ -72,6 +75,7 @@
                                 <div class="side-menu__title"> Add Batch </div>
                             </a>
                         </li>
+                       
 
                     </ul>
                 </li>
@@ -159,7 +163,23 @@
             </div>
             <!-- END: Top Bar -->
             <div class="grid columns-12 gap-6">
-                <div class="g-col-12 g-col-xxl-9 py-3">
+                <div class="g-col-12   py-3">
+                    @if (isset($msg))
+                    <div class="toast show " role="alert" aria-live="assertive" aria-atomic="true"
+                        style="right: 50px; position: absolute;bottom:90px;z-index:99">
+                        <div class="toast-header" style="background: rgb(4, 71, 255); color: white;">
+                            <strong class="me-auto">{{ env('APP_NAME') }}</strong>
+                            <button type="button" style="background: transparent" data-bs-dismiss="toast"
+                                aria-label="Close">
+                                <i data-feather="x-circle"></i>
+                            </button>
+                        </div>
+                        <div class="toast-body" style="font-size: 16px;">
+                            <i data-feather="thumbs-up" class="mb-2 w-4 h-4"></i>
+                            {{ $msg}}
+                        </div>
+                    </div>
+                    @endif
 
 
                     {{ $slot }}
