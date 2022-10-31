@@ -39,8 +39,10 @@ Route::middleware([
     });
 
     //*ADDING STUDENTS TO BATCH
-    Route::prefix('/student')->name('student.')->group(function(){
+    Route::prefix('/student')->name('student.')->group(function () {
         Route::GET('/add', [StudentController::class, 'index'])->name('add');
         Route::POST('/store', [StudentController::class, 'store'])->name('store');
+        Route::GET('/get-fine/{id}', [StudentController::class, 'getFine'])->name('get.fine');
+        Route::PUT('/update-fine/{id}', [StudentController::class, 'updateFine'])->name('update.fine');
     });
 });

@@ -104,7 +104,7 @@
                         <label for="" class="w-full">
                             Place Coma ( , ) for multiple names
                             <textarea style="min-height: 150px" name="studentNames" class="form-control my-3"
-                                placeholder="Example: John, Smith, Harvey"></textarea>
+                                placeholder="Example: John, Smith, Harvey">{{ old('studentNames') }}</textarea>
                         </label>
                         @error('studentNames')
                         <span style="color: red">{{ $message }}</span>

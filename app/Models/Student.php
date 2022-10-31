@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Fine;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Student extends Model
 {
@@ -13,4 +14,9 @@ class Student extends Model
     {
         return $this->belongsTo(Batch::class);
     }
+
+    public function fines(){
+        return $this->hasMany(Fine::class);
+    }
+
 }

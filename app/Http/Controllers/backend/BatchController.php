@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Models\Batch;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -53,6 +54,22 @@ class BatchController extends Controller
 
     public function view(Batch $batch)
     {
-        return view('backend.batch.batchView', compact('batch'));
+        $singleBatchInfo = Batch::with('students.fines')->select('id')->find($batch->id);
+        $students = $singleBatchInfo->students->collect();
+        $studentsDetails = [];
+
+        foreach ($students as $student) {
+
+            $total = $student->fines->sum('amount');
+            $left = $student->fines->filter(function ($value) {
+                return  $value->is_paid == 0;
+            })->sum('amount');
+
+            $studentsDetails[] = ['id' => $student->id, 'name' => $student->name, 'unPaid' => $left, 'total' => $total];
+        }
+
+        // dd($studentsDetails);
+
+        return view('backend.batch.batchView', compact('batch', 'studentsDetails'));
     }
 }
