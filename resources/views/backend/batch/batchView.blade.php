@@ -77,11 +77,11 @@
             <div class="studentCard d-flex justify-content-around align-items-center">
                 <h2>{{ ++$key }}. &nbsp; {{ $student['name'] }}</h2>
                 <p class="leftout text-center fw-bold">
-                    <span>Un-paid</span> <br>
+                    <span class="text-danger">Un-paid</span> <br>
                     {{ $student['unPaid'] }} tk
                 </p>
-                <p class="paid text-center fw-bold">
-                    <span>Paid</span> <br>
+                <p class="paid text-center fw-bold ">
+                    <span class="text-success">Paid</span> <br>
                     {{ $student['total'] - $student['unPaid'] }} tk
                 </p>
                 <p class="total text-center fw-bold">
@@ -129,7 +129,6 @@
 
 
     @push('customJs')
-    <script src="{{ asset('backend/js/jquery-3.6.1.min.js') }}"></script>
 
 
     <script>

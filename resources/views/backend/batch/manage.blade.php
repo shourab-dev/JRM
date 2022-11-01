@@ -18,6 +18,8 @@
                         <th>#</th>
                         <th>Batch Name</th>
                         <th>Total Students</th>
+                        <th>Total Fines</th>
+                        <th>Unpaid Fines</th>
                         <th>View</th>
                         <th>Created At</th>
                     </tr>
@@ -26,6 +28,10 @@
                         <td>{{ ++$key }}</td>
                         <td>{{ $batch->name }}</td>
                         <td>{{ $batch->students_count }}</td>
+                        <td>
+                            <div class="btn-primary btn-sm btn">{{ $batch->total ?? 0 }} tk</div>
+                        </td>
+                        <td><div class="btn btn-sm btn-danger">{{ $batch->unpaid ?? 0 }} tk</div></td>
                         <td>
                             <a href="{{ route('batch.view', $batch->slug) }}" class="btn btn-warning btn-sm">
                                 <i style="width: 16px;" data-feather="plus"></i>

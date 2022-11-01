@@ -11,7 +11,13 @@ class BatchController extends Controller
 {
     public function index()
     {
-        $batches =  Batch::withCount('students')->simplePaginate(15);
+        $batches =  Batch::withCount('students')->withSum('fines as total', 'amount')
+            ->withSum([
+                'fines as unpaid' => function ($q) {
+                    $q->where('is_paid', 0);
+                }
+            ], 'amount')
+            ->simplePaginate(15);
 
         return view('backend.batch.manage', compact('batches'));
     }
@@ -71,5 +77,23 @@ class BatchController extends Controller
         // dd($studentsDetails);
 
         return view('backend.batch.batchView', compact('batch', 'studentsDetails'));
+    }
+
+
+
+    /**
+     * * @RETURN ALL BATCHES AS RESPONSE
+     */
+    public function allBatchesWithOutStudents()
+    {
+        $batches = Batch::select('id', 'name')->latest()->get();
+        return json_encode($batches);
+    }
+
+
+    public function allBatchesWithStudents(Request $request)
+    {
+        $batch = Student::select('id', 'name', 'batch_id')->where('batch_id', $request->id)->latest()->get();
+        return json_encode($batch);
     }
 }

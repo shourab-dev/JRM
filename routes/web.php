@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\backend\FineController;
 use App\Http\Controllers\backend\BatchController;
 use App\Http\Controllers\backend\StudentController;
 
@@ -36,6 +37,8 @@ Route::middleware([
         Route::POST('/store', [BatchController::class, 'store'])->name('store');
         Route::GET('/edit/{editedBatch:slug}', [BatchController::class, 'batchEdit'])->name('edit');
         Route::PUT('/update/{editedBatch:slug}', [BatchController::class, 'update'])->name('update');
+        Route::GET('/all-batches-info', [BatchController::class, 'allBatchesWithOutStudents'])->name('all');
+        Route::POST('/all-batches--student-info', [BatchController::class, 'allBatchesWithStudents'])->name('all.student');
     });
 
     //*ADDING STUDENTS TO BATCH
@@ -44,5 +47,10 @@ Route::middleware([
         Route::POST('/store', [StudentController::class, 'store'])->name('store');
         Route::GET('/get-fine/{id}', [StudentController::class, 'getFine'])->name('get.fine');
         Route::PUT('/update-fine/{id}', [StudentController::class, 'updateFine'])->name('update.fine');
+    });
+
+    //*Saving Fines
+    Route::prefix('/fines/')->name('fine.')->group(function () {
+        Route::POST('/store', [FineController::class, 'store'])->name('store');
     });
 });

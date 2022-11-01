@@ -15,14 +15,84 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    @vite('resources/backend/css/app.css')
+    <link rel="stylesheet" href="{{ asset('backend/css/nice-select2.css') }}">
+    @vite(['resources/backend/css/app.css','resources/backend/css/style.css'])
     @stack('customCss')
     <!-- END: CSS Assets-->
 </head>
 <!-- END: Head -->
 
 <body class="main">
+    <div id="fineModal" class="fineModal--collapse">
+        <div class="container">
+            <div class="modalContainer">
+                <div class="modalHeader d-flex justify-content-between align-items-center pb-2 border-bottom">
+                    <h2 class="fw-bold fs-xl">Add Jorimana</h2>
+                    <button class="btn btn-danger btn-sm closeModalBtn">
+                        <i data-feather="x"></i>
+                    </button>
+                </div>
 
+                <div class="modalBody  mt-5">
+
+                    <div class="selectBatches">
+                        <label class="w-full">
+                            <span>Batch Selection</span>
+                            <select name="batch" class="form-control">
+                                <option disabled selected>Select A Batch</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="allStudentsLists ">
+
+                        <div class="studentList">
+                            <div class="col">
+                                <h2 class="fw-bold fs-md">Student Name</h2>
+                                <select name="studentids[]" class="studentids form-control niceSelect wide"
+                                    multiple="multiple">
+
+                                </select>
+                            </div>
+                            <div class="col">
+                                <h2 class="fw-bold fs-md">Amount</h2>
+                                <input type="number" id="amount" name="amount" class="form-control">
+
+                            </div>
+                            <div class="col">
+                                <h2 class="fw-bold fs-md">Status</h2>
+                                <select name="is_paid" id="is_paid" class="form-control niceSelect">
+                                    <option value="{{ false }}">Un-Paid</option>
+                                    <option value="{{ true }}">Paid</option>
+                                </select>
+                            </div>
+                            <div>
+                                <br>
+                                <span class="btn btn-primary submitFineButton"><i data-feather="user-check"></i></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="toast-container show position-fixed end-0 p-3" style="bottom: 16px">
+            <div id="liveToastFine" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+
+                    <strong class="me-auto">{{ env('APP_NAME') }}</strong>
+                    <small>1 sec ago</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="d-flex">
         <!-- BEGIN: Side Menu -->
         <nav class="side-nav">
@@ -32,45 +102,28 @@
             <div class="side-nav__devider my-6"></div>
             <ul>
                 <li>
-                    <a href="javascript:;" class="side-menu side-menu--active side-menu--open">
+                    <a href="{{ route('dashboard') }}"
+                        class="side-menu {{ request()->routeis('dashboard') ? 'side-menu--active side-menu--open' : '' }}">
                         <div class="side-menu__icon"> <i data-feather="home"></i> </div>
                         <div class="side-menu__title">
                             Dashboard
-                            <div class="side-menu__sub-icon"> <i data-feather="chevron-down"></i> </div>
+
                         </div>
                     </a>
-                    <ul class="side-menu__sub-open">
-                        <li>
-                            <a href="index.html" class="side-menu side-menu--active side-menu--open">
-                                <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                                <div class="side-menu__title"> Overview 1 </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="side-menu-light-dashboard-overview-2.html" class="side-menu">
-                                <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                                <div class="side-menu__title"> Overview 2 </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="side-menu-light-dashboard-overview-3.html" class="side-menu">
-                                <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
-                                <div class="side-menu__title"> Overview 3 </div>
-                            </a>
-                        </li>
-                    </ul>
+
                 </li>
                 <li>
-                    <a href="javascript:;" class="side-menu ">
+                    <a href="javascript:;"
+                        class="side-menu {{ request()->routeis(['batch*', 'fine*','student*']) ? 'side-menu--active side-menu--open' : '' }}">
                         <div class="side-menu__icon"> <i data-feather="users"></i> </div>
                         <div class="side-menu__title">
                             Manage Students
                             <div class="side-menu__sub-icon"> <i data-feather="chevron-down"></i> </div>
                         </div>
                     </a>
-                    <ul class="">
+                    <ul class="{{ request()->routeis(['batch*', 'fine*','student*']) ? 'side-menu__sub-open' : '' }}">
                         <li>
-                            <a href="{{ route('batch.add') }}" class="side-menu ">
+                            <a href="{{ route('batch.add') }} " class="side-menu ">
                                 <div class="side-menu__icon"> <i data-feather="activity"></i> </div>
                                 <div class="side-menu__title"> Manage Batch </div>
                             </a>
@@ -94,6 +147,11 @@
                 </div>
                 <!-- END: Breadcrumb -->
 
+                {{-- * ADD JORIMANA BUTTON --}}
+                <button class="btn btn-primary mx-5 intro-x" id="addFineBtn">
+                    Add Jorimana +
+                </button>
+                {{-- * ADD JORIMANA BUTTON ENDS --}}
 
                 <!-- BEGIN: Account Menu -->
                 <div class="intro-x dropdown w-8 h-8">
@@ -193,7 +251,131 @@
     </div>
 
     <!-- BEGIN: JS Assets-->
+    <script src="{{ asset('backend/js/jquery-3.6.1.min.js') }}"></script>
+    <script src="{{ asset('backend/js/nice-select2.js') }}"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+    </script>
     @vite('resources/backend/js/app.js')
+
+    <script>
+        let niceSelects = document.querySelectorAll(".niceSelect")
+        niceSelects = Array.from(niceSelects)
+        let niceSelectInstances = []
+         niceSelects.map(niceSelect => {
+             let niceSelectIns =  NiceSelect.bind(niceSelect, {searchable: true});
+            niceSelectInstances.push(niceSelectIns)
+        })
+        //* ADD FINES 
+        let batchSelect = $('select[name="batch"]')
+        let modal = $('#fineModal')
+        let addFineBtn = $('#addFineBtn')
+        let closeModalBtn = $('.closeModalBtn')
+        let count = 0
+        addFineBtn.on('click', openModal)
+        closeModalBtn.on('click', closeModal)
+       function openModal(){
+        modal.addClass('activeModal')
+       }
+       function closeModal(){
+        modal.removeClass('activeModal')
+       }
+
+       
+       //* RETURN ALL BATCHES ON HOVER
+       $('.selectBatches').on('mouseenter',function(){
+            let options = []
+            if(count == 0){
+            $.ajax({
+                url: "{{ route('batch.all') }}",
+                dataType: 'json',
+                type: 'get',
+                success: function(res){
+                    
+                   res.map(batch => {
+                       let option = `<option class="dynamicBatches" value="${batch.id}">${batch.name}</option>`
+                       options.push(option)
+                   }) 
+                   batchSelect.find("option.dynamicBatches").remove();
+                   batchSelect.append(options)
+                   count = count +1
+
+                }
+            })
+            }
+            return false;
+
+       })
+
+       //* RETURN ALL STUDENTS ON A BATCH
+       let studentIds = $('.studentids');
+       $('.selectBatches').on('change', function(){
+            let batchId = batchSelect.val();
+            $.ajax({
+            headers: {
+            'X-CSRF-TOKEN': "{{csrf_token()}}",
+            },
+            url: "{{ route('batch.all.student') }}",
+            dataType: 'json',
+            type: 'post',
+            data: {id: batchId},
+            success: function(res){
+                let options = []
+                res.map(student => {
+                    let option = `<option value="${student.id}">${student.name}</option>`
+                    options.push(option)
+                })
+                studentIds.html(options)
+                niceSelectInstances[0].update();
+                
+            }
+            })
+       })
+
+
+       //*SAVE FINES
+     const toastLiveExample = document.getElementById('liveToastFine')
+        
+    const toast = new bootstrap.Toast(toastLiveExample)
+        
+      
+
+       $('.submitFineButton').on('click',function(){
+            let studentValues = studentIds.val()
+            let amount = $('input#amount').val()
+            let is_paid = $('select#is_paid').val()
+            if(studentValues.length > 0){
+
+                $.ajax({
+                    headers:{
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    },
+                    url: "{{ route('fine.store') }}",
+                    data: {ids: studentValues, amount:amount, is_paid: is_paid},
+                    dataType: 'text',
+                    type: 'post',
+                    success: function(res){
+                        console.log(res)
+                       
+                        $('input#amount').val('')
+                       $('select#is_paid').val('')
+                        studentIds.children('option').removeAttr("selected")
+                       niceSelectInstances[0].update()
+                       niceSelectInstances[1].update()
+                       $('#liveToastFine').children('div.toast-body').html(res)
+                       toast.show()
+                    }
+                })
+
+
+            }
+            return false;
+
+       })
+
+
+    </script>
     @stack('customJs')
     <!-- END: JS Assets-->
 </body>

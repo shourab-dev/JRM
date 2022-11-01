@@ -1,0 +1,50 @@
+#fineModal {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    z-index: 9999;
+    padding: 50px;
+}
+#fineModal .container {
+    width: 100%;
+    height: 100%;
+}
+.fineModal--collapse {
+    transition: 0.35s ease;
+}
+.fineModal--collapse {
+    transform: translateY(100%);
+    opacity: 0;
+}
+.fineModal--collapse .modalContainer {
+    transform: translateY(20%);
+    opacity: 0;
+}
+.modalContainer {
+    border-radius: 15px;
+    width: 100%;
+    height: fit-content;
+    background-color: #fff;
+    padding: 20px;
+    transition: 0.3s ease-in;
+    transition-delay: 0.2s;
+}
+
+.activeModal,
+.activeModal .modalContainer {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+.allStudentsLists {
+    padding: 20px 0;
+}
+.allStudentsLists .studentList {
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}

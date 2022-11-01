@@ -13,4 +13,8 @@ class Batch extends Model
     {
         return $this->hasMany(Student::class);
     }
+    public function fines()
+    {
+        return $this->hasManyThrough(Fine::class, Student::class);
+    }
 }
